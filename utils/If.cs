@@ -10,21 +10,7 @@ namespace HassakuLab
 
         public static IfContext<T> If<T>(bool condition, Func<T> evaluate)
         {
-            if (condition)
-            {
-                return new IfContext<T>
-                {
-                    Value = evaluate(),
-                    IsConfirmed = true,
-                };
-            }
-            else
-            {
-                return new IfContext<T>
-                {
-                    IsConfirmed = false,
-                };
-            }
+            return If(condition, evaluate());
         }
 
         public static IfContext<T> If<T>(bool condition, T evaluation)
@@ -48,20 +34,7 @@ namespace HassakuLab
 
         public static IfContext<T> ElseIf<T>(this IfContext<T> context, bool condition, Func<T> evaluate)
         {
-            if (context.IsConfirmed) return context;
-
-            if (condition)
-            {
-                return new IfContext<T>
-                {
-                    Value = evaluate(),
-                    IsConfirmed = true,
-                };
-            }
-            else
-            {
-                return context;
-            }
+            return context.ElseIf(condition, evaluate());
         }
 
         public static IfContext<T> ElseIf<T>(this IfContext<T> context, bool condition, T evaluation)
@@ -84,7 +57,7 @@ namespace HassakuLab
 
         public static T Else<T>(this IfContext<T> context, Func<T> evaluate)
         {
-            return context.IsConfirmed ? context.Value : evaluate();
+            return context.Else(evaluate());
         }
 
         public static T Else<T>(this IfContext<T> context, T evaluation)
